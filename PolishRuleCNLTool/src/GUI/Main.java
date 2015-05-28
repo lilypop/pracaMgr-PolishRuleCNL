@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import Controller.WindowController;
 /**
@@ -11,16 +12,16 @@ import Controller.WindowController;
 public class Main {
 	
 	private WindowController windowController;
-	private JDialog dialog;
+	private JFrame frame;
 	
 	public void run(){
-		dialog = new JDialog();
+		frame = new JFrame();
 		windowController = new WindowController();
-		dialog.add(windowController.getWindow());
-		dialog.setTitle("PolishRuleCNL - Tools");
-		dialog.setVisible(true);
-		dialog.setLocation(100, 100);
-		dialog.setSize(1200, 400);
+		frame.add(windowController.getWindow());
+		frame.setTitle("PolishRuleCNL - Tools");
+		frame.setVisible(true);
+		frame.setLocation(100, 100);
+		frame.setSize(1200, 400);
 	}
 
 	public static void main (String [] args){

@@ -17,6 +17,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import Grammar.VocabularySemanticAnalyzer;
 import Model.Attribute;
 import Model.AttributeName;
 import Model.Line;
@@ -336,8 +337,20 @@ public class Algorytm {
 		
 	}
 	
+	public void parseVocabulary() {
+		for (VocEntry vocEntry : vocabulary) {
+			parseVocEntry(vocEntry);
+		}
+		
+	}
 	
 	
+	private void parseVocEntry(VocEntry vocEntry) {
+		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(vocEntry);
+		semanticAnalyzer.walkTree();
+		
+	}
+
 	public List<VocEntry> getVocabulary() {
 		return vocabulary;
 	}
@@ -353,9 +366,7 @@ public class Algorytm {
 	public void setRules(List<RuleEntry> rules) {
 		this.rules = rules;
 	}
-	
-	
-	
+
 	
 	
 	

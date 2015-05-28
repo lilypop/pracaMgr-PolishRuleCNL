@@ -42,10 +42,22 @@ public class WindowController {
 		window.setLoadRulesButtonAction(createLoadRuleButtonAction());
 		window.setRunRulesTager(createRunRulesTagerButtonAction());
 		window.setRunVocTager(createRunVocTagerButtonAction());
+		window.setRunAntlrParser(createRunAntlrParserButtonAction());
 		return window.getWindow();
 	}
 	
 	
+
+	private ActionListener createRunAntlrParserButtonAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				algorytm.parseVocabulary();
+				
+			}
+		};
+	}
 
 	private ActionListener createRunVocTagerButtonAction() {
 		return new ActionListener() {
