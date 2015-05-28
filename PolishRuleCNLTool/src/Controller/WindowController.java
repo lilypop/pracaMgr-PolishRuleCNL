@@ -27,7 +27,7 @@ public class WindowController {
 	private Algorytm algorytm;
 	
 	private String ruleFile = "C:\\Users\\wposlednicka\\Documents\\rules.txt";
-	private String vocFile = "C:\\Users\\wposlednicka\\Documents\\voc.txt";
+	private String vocFile = "/home/mkosior/voc";
 	
 	public WindowController(){
 		window = new Window();
@@ -54,7 +54,6 @@ public class WindowController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				algorytm.parseVocabulary();
-				
 			}
 		};
 	}

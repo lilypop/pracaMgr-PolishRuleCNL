@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -329,8 +330,6 @@ public class Algorytm {
 				entry.setRepresentation(rep);
 				rules.add(entry);
 			}
-			
-			
 		}
 		
 		System.out.println("Wczytano reguły: " + rules.size());
@@ -338,10 +337,20 @@ public class Algorytm {
 	}
 	
 	public void parseVocabulary() {
-		for (VocEntry vocEntry : vocabulary) {
-			parseVocEntry(vocEntry);
+		Iterator<VocEntry> vocIterator = vocabulary.iterator();
+		while (vocIterator.hasNext()) {
+			VocEntry vocEntry = vocIterator.next();
+			try {
+				parseVocEntry(vocEntry);
+			} catch (Exception e) {
+				String errorMsg = "Błąd dla wpisu " + vocEntry.getRepresentation().getBaseForm();
+				errorMsg += ":\n";
+				errorMsg += e.getMessage();
+				JOptionPane.showMessageDialog(null, errorMsg);
+				vocIterator.remove();
+			}
 		}
-		
+
 	}
 	
 	
