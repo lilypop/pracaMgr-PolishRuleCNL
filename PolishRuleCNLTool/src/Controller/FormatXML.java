@@ -23,12 +23,11 @@ public class FormatXML {
 	public Entry addTagerInfo(Entry entry){
 		
 		 try {
-			 
 			 	String id = Tager.nlpFileUpload(entry.getRepresentation().getText());
 				id = Tager.nlpProcess("wcrft2",id);
-				Tager.nlpFileDownload(id,"C:\\Users\\wposlednicka\\Documents\\test_nlp.xml");
+				Tager.nlpFileDownload(id,"test_nlp.xml");
 			 	
-				File fXmlFile = new File("C:\\Users\\wposlednicka\\Documents\\test_nlp.xml");
+				File fXmlFile = new File("test_nlp.xml");
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.parse(fXmlFile);
@@ -104,6 +103,7 @@ public class FormatXML {
 		else{
 			entry.getRepresentation().setTaggedText(tagged);
 		}
+//		entry.getRepresentation().setVetisText(createVetisText(taggedText));
 		
 		String baseForm = entry.getRepresentation().getBaseForm();
 		
@@ -116,6 +116,11 @@ public class FormatXML {
 		}
 		
 		return entry;
+	}
+
+
+	private String createVetisText(String taggedText) {
+		return taggedText.replaceAll(" ", "_");
 	}
 
 

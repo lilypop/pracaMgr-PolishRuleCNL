@@ -27,7 +27,7 @@ public class WindowController {
 	private Algorytm algorytm;
 	
 	private String ruleFile = "C:\\Users\\wposlednicka\\Documents\\rules.txt";
-	private String vocFile = "C:\\Users\\wposlednicka\\Documents\\voc.txt";
+	private String vocFile = "C:\\Users\\wposlednicka\\Documents\\rules.txt";
 	
 	public WindowController(){
 		window = new Window();
@@ -42,10 +42,21 @@ public class WindowController {
 		window.setLoadRulesButtonAction(createLoadRuleButtonAction());
 		window.setRunRulesTager(createRunRulesTagerButtonAction());
 		window.setRunVocTager(createRunVocTagerButtonAction());
+		window.setRunAntlrParser(createRunAntlrParserButtonAction());
 		return window.getWindow();
 	}
 	
 	
+
+	private ActionListener createRunAntlrParserButtonAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				algorytm.parseVocabulary();
+			}
+		};
+	}
 
 	private ActionListener createRunVocTagerButtonAction() {
 		return new ActionListener() {

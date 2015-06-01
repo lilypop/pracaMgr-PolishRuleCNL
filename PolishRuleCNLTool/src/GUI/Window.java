@@ -29,6 +29,7 @@ public class Window {
 	private ActionListener chooserPathButtonAction;
 	private ActionListener runVocTager;
 	private ActionListener runRulesTager;
+	private ActionListener runAntlrParser;
 	private JTextField loadPathText;
 	private JPanel tagVocPanel;
 	private JPanel tagRulePanel;
@@ -56,7 +57,7 @@ public class Window {
 		tagRulePanel.setVisible(false);
 		builder.add(tagRulePanel, cc.xy(4, 4));
 		
-		antlrVocPanel = createAntlrPanel("3. ETAP - Uruchomienie Antlr dla słownika", null);
+		antlrVocPanel = createAntlrPanel("3. ETAP - Uruchomienie Antlr dla słownika", runAntlrParser);
 		antlrVocPanel.setVisible(true);
 		builder.add(antlrVocPanel, cc.xy(2, 6));
 		
@@ -185,6 +186,14 @@ public class Window {
 
 	public void setAntlrRulePanel(JPanel antlrRulePanel) {
 		this.antlrRulePanel = antlrRulePanel;
+	}
+
+	public ActionListener getRunAntlrParser() {
+		return runAntlrParser;
+	}
+
+	public void setRunAntlrParser(ActionListener runAntlrParser) {
+		this.runAntlrParser = runAntlrParser;
 	}
 	
 	

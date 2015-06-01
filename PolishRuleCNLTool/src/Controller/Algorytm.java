@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -17,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import Grammar.VocabularySemanticAnalyzer;
 import Model.Attribute;
 import Model.AttributeName;
 import Model.Line;
@@ -38,7 +40,6 @@ public class Algorytm {
 	
 	private String ruleXMLFilePath = "C:\\Users\\wposlednicka\\Documents\\rules.xml";
 	private String vocXMLFilePath = "C:\\Users\\wposlednicka\\Documents\\vocabulary.xml";
-	
 	
 	public Algorytm(){
 		attributeNames = generateAttributeNamesList();
@@ -73,43 +74,50 @@ public class Algorytm {
 	public void generateVocabulary(ArrayList<Line> vocabularyLine) {
 		vocabulary = new ArrayList<VocEntry>();
 		VocEntry entry = null;
-		
+
 		for (Line line : vocabularyLine) {
 
-			AttributeName checkIsAttribute = checkIsAttribute(line);
-			
-			if(checkIsAttribute != null){ // jest atrybutem
-				Attribute a = new Attribute();
-				a.setName(checkIsAttribute);
-				
-				String value = "";
-				
-				for(int i=1; i<line.getWords().size(); i++){
-					value += line.getWords().get(i) + " ";
+			if (!line.getWords().get(0).startsWith("#")) {
+
+				AttributeName checkIsAttribute = checkIsAttribute(line);
+
+				if (checkIsAttribute != null) { // jest atrybutem
+					Attribute a = new Attribute();
+					a.setName(checkIsAttribute);
+
+					String value = "";
+
+					for (int i = 1; i < line.getWords().size(); i++) {
+						value += line.getWords().get(i) + " ";
+					}
+
+					a.setValue(value);
+					a.setVetisText(value);
+
+					entry.getAttributes().add(a);
+				} else {
+					entry = new VocEntry();
+					entry.setAttributes(new ArrayList<Attribute>());
+					Representation rep = new Representation(line.getValue());
+					rep.setVetisText(createVetisText(line.getValue()));
+					entry.setRepresentation(rep);
+					vocabulary.add(entry);
 				}
-				
-				a.setValue(value);
-				a.setVetisText(value);
-				
-				entry.getAttributes().add(a);
 			}
-			else{
-				entry = new VocEntry();
-				entry.setAttributes(new ArrayList<Attribute>());
-				Representation rep = new Representation(line.getValue());
-				entry.setRepresentation(rep);
-				vocabulary.add(entry);
-			}
-			
-			
+
 		}
-		
+
 		System.out.println("Wczytano do słownika: " + vocabulary.size());
-		
+
 	}
 	
+	private String createVetisText(String value) {
+		//TODO
+		return value;
+	}
+
 	private AttributeName checkIsAttribute(Line line) {
-		String firstWord = line.getWords().get(0);
+		String firstWord = line.getWords().get(0).trim();
 		
 		for (AttributeName attributeName : attributeNames) {
 			if (attributeName.getValue().equals(firstWord)) {
@@ -328,16 +336,47 @@ public class Algorytm {
 				entry.setRepresentation(rep);
 				rules.add(entry);
 			}
-			
-			
 		}
 		
 		System.out.println("Wczytano reguły: " + rules.size());
 		
 	}
 	
+	public void parseVocabulary() {
+		Iterator<VocEntry> vocIterator = vocabulary.iterator();
+		while (vocIterator.hasNext()) {
+			VocEntry vocEntry = vocIterator.next();
+			try {
+				parseVocEntry(vocEntry);
+				drawTree(vocEntry);
+			} catch (Exception e) {
+				e.printStackTrace();
+				String errorMsg = "Błąd dla wpisu " + vocEntry.getRepresentation().getBaseForm();
+				errorMsg += ":\n";
+				errorMsg += e.getMessage();
+				JOptionPane.showMessageDialog(null, errorMsg);
+				vocIterator.remove();
+			}
+		}
+
+	}
 	
 	
+	private void drawTree(VocEntry vocEntry) {
+		try {
+			VocabularySemanticAnalyzer.drawTree(vocEntry);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private void parseVocEntry(VocEntry vocEntry) {
+		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(vocEntry);
+		semanticAnalyzer.walkTree();
+		
+	}
+
 	public List<VocEntry> getVocabulary() {
 		return vocabulary;
 	}
@@ -353,9 +392,7 @@ public class Algorytm {
 	public void setRules(List<RuleEntry> rules) {
 		this.rules = rules;
 	}
-	
-	
-	
+
 	
 	
 	
