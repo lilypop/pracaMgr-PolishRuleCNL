@@ -1,5 +1,8 @@
 package Grammar;
 
+import java.io.File;
+import java.io.FileWriter;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
@@ -8,6 +11,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import Grammar.PolishRuleCNLParser.SlownikContext;
+import Model.Representation;
 import Model.VocEntry;
 
 public class VocabularySemanticAnalyzer {
@@ -22,7 +26,13 @@ public class VocabularySemanticAnalyzer {
 //	Representation [text=Każda pożyczka zawsze jest otrzymana przez dokładnie jednego dłużnika, baseForm=każdy pożyczka zawsze być otrzymać przez dokładnie jeden dłużnik, taggedText=adj każdy subst pożyczka adv zawsze fin być ppas otrzymać prep przez qub dokładnie adj jeden subst dłużnik, fullyTaggedText=każdy:adj:sg:nom:f:pos:Każda pożyczka:subst:sg:nom:f:pożyczka zawsze:adv:zawsze być:fin:sg:ter:imperf:jest otrzymać:ppas:sg:nom:f:perf:aff:otrzymana przez:prep:acc:nwok:przez dokładnie:qub:dokładnie jeden:adj:sg:acc:m1:pos:jednego dłużnik:subst:sg:acc:m1:dłużnika]
 //
 	
-	public static void main(String[] args) throws Exception {
+	public static void drawTree(VocEntry vocEntry) throws Exception {
+		File file = new File("/home/mkosior/voc_tag");
+		FileWriter fileWriter = new FileWriter(file);
+		fileWriter.append(vocEntry.getRepresentation().getTaggedText());
+		fileWriter.flush();
+		fileWriter.close();
+		
 		TestRig.main(new String[] {"Grammar.PolishRuleCNL", "slownik", "-gui", "/home/mkosior/voc_tag"});
 	}
 	
@@ -62,7 +72,10 @@ public class VocabularySemanticAnalyzer {
 
 	public void walkTree() {
 		
-		ParseTreeWalker walker = new ParseTreeWalker();
+		System.out.println("VocEntry przed: " + vocEntry);
+		
+		VocEntryParseTreeWalker walker = new VocEntryParseTreeWalker();
+		walker.setVocEntry(vocEntry);
 		SlownikContext slownik = null;
 		
 		try {
@@ -77,6 +90,17 @@ public class VocabularySemanticAnalyzer {
 		} else {
 			throw new RuntimeException("Wpis nie jest wpisem słownikowym");
 		}
+		
+		System.out.println("VocEntry po: " + vocEntry);
+	}
+	
+	public static void main(String[] args) {
+		VocEntry vocEntry = new VocEntry();
+		vocEntry.setRepresentation(new Representation());
+		vocEntry.getRepresentation().setTaggedText("subst kierowca fin prowadzić subst samochód");
+		VocabularySemanticAnalyzer analyzer = new VocabularySemanticAnalyzer(vocEntry);
+		analyzer.walkTree();
+		
 	}
 
 }

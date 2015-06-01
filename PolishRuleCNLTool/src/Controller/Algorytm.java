@@ -99,6 +99,7 @@ public class Algorytm {
 				entry = new VocEntry();
 				entry.setAttributes(new ArrayList<Attribute>());
 				Representation rep = new Representation(line.getValue());
+				rep.setVetisText(createVetisText(line.getValue()));
 				entry.setRepresentation(rep);
 				vocabulary.add(entry);
 			}
@@ -110,8 +111,13 @@ public class Algorytm {
 		
 	}
 	
+	private String createVetisText(String value) {
+		//TODO
+		return value;
+	}
+
 	private AttributeName checkIsAttribute(Line line) {
-		String firstWord = line.getWords().get(0);
+		String firstWord = line.getWords().get(0).trim();
 		
 		for (AttributeName attributeName : attributeNames) {
 			if (attributeName.getValue().equals(firstWord)) {
@@ -342,7 +348,9 @@ public class Algorytm {
 			VocEntry vocEntry = vocIterator.next();
 			try {
 				parseVocEntry(vocEntry);
+				drawTree(vocEntry);
 			} catch (Exception e) {
+				e.printStackTrace();
 				String errorMsg = "Błąd dla wpisu " + vocEntry.getRepresentation().getBaseForm();
 				errorMsg += ":\n";
 				errorMsg += e.getMessage();
@@ -354,6 +362,15 @@ public class Algorytm {
 	}
 	
 	
+	private void drawTree(VocEntry vocEntry) {
+		try {
+			VocabularySemanticAnalyzer.drawTree(vocEntry);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	private void parseVocEntry(VocEntry vocEntry) {
 		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(vocEntry);
 		semanticAnalyzer.walkTree();

@@ -9,32 +9,34 @@ import java.util.List;
  */
 public abstract class Entry {
 
-	private Representation Representation;
-    private List<Attribute> Attributes;
-//    private Meaning Meaning;
+	private Representation representation;
+    private List<Attribute> attributes;
+    private Meaning meaning;
 	
     public Representation getRepresentation() {
-		return Representation;
+		return representation;
 	}
 	public void setRepresentation(Representation representation) {
-		Representation = representation;
+		this.representation = representation;
 	}
 	public List<Attribute> getAttributes() {
-		return Attributes;
+		return attributes;
 	}
 	public void setAttributes(List<Attribute> attributes) {
-		Attributes = attributes;
+		this.attributes = attributes;
 	}
-//	public Meaning getMeaning() {
-//		return Meaning;
-//	}
-//	public void setMeaning(Meaning meaning) {
-//		Meaning = meaning;
-//	}
+
+	public Meaning getMeaning() {
+		return meaning;
+	}
+
+	public void setMeaning(Meaning meaning) {
+		this.meaning = meaning;
+	}
 	@Override
 	public String toString() {
-		return "Entry [Representation=" + Representation + ", Attributes="
-				+ Attributes + "]";
+		return "Entry [Representation=" + representation + ", Attributes="
+				+ attributes + "]";
 	}
 
 
