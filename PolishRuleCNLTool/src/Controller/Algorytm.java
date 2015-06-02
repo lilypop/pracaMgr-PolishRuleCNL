@@ -373,7 +373,8 @@ public class Algorytm {
 
 	private void parseVocEntry(VocEntry vocEntry) {
 		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(vocEntry);
-		semanticAnalyzer.walkTree();
+		semanticAnalyzer.walkRuleTree();
+		//		semanticAnalyzer.walkVocTree();
 		
 	}
 

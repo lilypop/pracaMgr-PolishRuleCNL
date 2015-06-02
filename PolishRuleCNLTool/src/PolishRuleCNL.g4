@@ -20,7 +20,29 @@ slownik :
 ;
 
 regula :
-	ograniczenieLicznosciowe
+	ograniczenieLicznosciowe | logiczneSformulowania | modalneSformulowania
+;
+
+logiczneSformulowania :
+	sfurmulowanieLogiczneNegacja
+	| sformulowanieRownowaznosc
+	| sformulowanieImplikacji
+;
+
+modalneSformulowania :
+	sformułowanieModalneProste
+	| sformułowanieModalneZlozone
+;
+
+sformułowanieModalneZlozone :
+	pojecieRzeczownikoweZOkresleniem
+	operatorModalny
+	pojecieRzeczownikoweZOkresleniem
+;
+
+sformułowanieModalneProste :
+	operatorModalny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
 ;
 
 pojecieRzeczownikowe :
@@ -145,9 +167,55 @@ czasownikByc :
 	'fin' 'być'
 ;
 
+sformulowanieRownowaznosc :
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+	operatorLogiczny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe	
+;
+
+sformulowanieImplikacji :
+	prostaImplikacja | zlozonaImplikacja
+;
+
+prostaImplikacja :
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+	operatorLogiczny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+;
+
+zlozonaImplikacja :
+	operatorLogiczny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+	operatorLogiczny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+;
+
+pojecieRzeczownikoweRelacjaPojecieRzeczownikowe:
+	pojecieRzeczownikoweZOkresleniem
+	relacja
+	pojecieRzeczownikoweZOkresleniem
+;
+
 ograniczenieLicznosciowe :
 	kwantyfikatorOgolny pojecieRzeczownikowe operatorModalnyDlaKoniecznosci
 	relacja kwantyfikatorLicznosciowy pojecieRzeczownikowe
+;
+
+sfurmulowanieLogiczneNegacja :
+	operatorLogiczny pojecieRzeczownikoweZOkresleniem 
+	relacja 
+	kwantyfikatorLicznosciowy pojecieRzeczownikowe
+;
+
+pojecieRzeczownikoweZOkresleniem :
+	 pojecieRzeczownikowe 
+	| kwantyfikatorOgolny pojecieRzeczownikowe 
+	| pojecieRzeczownikowe kwantyfikatorOgolny 
+	| operatorModalnyCalosc pojecieRzeczownikowe
+	| operatorModalnyDlaKoniecznosci kwantyfikatorOgolny pojecieRzeczownikowe
+	| operatorModalnyDlaKoniecznosci pojecieRzeczownikowe
+	| pojecieRzeczownikowe operatorModalnyDlaKoniecznosci
+	| ''
 ;
 
 kwantyfikatorOgolny :
@@ -157,6 +225,10 @@ kwantyfikatorOgolny :
 operatorModalnyDlaKoniecznosci :
 	'zawsze'
 ;
+
+operatorModalnyCalosc : 
+	 'adj' 'wszystko'
+;	
 
 kwantyfikatorLicznosciowy :
 	minimumN
@@ -216,6 +288,156 @@ przynajmniejJeden :
 	'przynajmniej' 'adj' 'jeden'
 ;
 
+operatorLogiczny :
+	logicznaNegacja
+	| koniunkcja
+	| dysjunkcja
+	| dysjunkcjaRozlaczna
+	| implikacja
+	| koniecImplikacji
+	| rownowaznosc
+	| sformulowanieNieZaleznosciElementow
+;
+
+logicznaNegacja :
+	niePrawdaZe | niejestPrawdaZe | nie
+;
+
+niejestPrawdaZe :
+	'qub' 'nie' 'fin' 'jest' 'subst' 'prawda' 'interp' ',' 'comp' 'że'
+;
+
+niePrawdaZe :
+	'qub' 'nie' 'subst' 'prawda' 'interp' ',' 'comp' 'że' 
+;
+
+nie :
+	'qub' 'nie'
+;
+
+koniunkcja :
+	i | oraz
+;
+
+i :
+	'conj' 'i'
+;
+
+dysjunkcja :
+	'conj' 'lub'
+;
+
+oraz :
+	'conj' 'oraz'
+;
+
+dysjunkcjaRozlaczna :
+	'conj' 'albo'
+;
+
+implikacja :
+	'comp' 'jeśli'  
+;
+
+koniecImplikacji :
+	'subst' 'to'
+;
+
+rownowaznosc :
+	tylkoGdy | wtedyItylkoWtedyGdy
+;
+tylkoGdy :
+	'qub' 'tylko' 'adv' 'gdy'
+;
+
+wtedyItylkoWtedyGdy :
+	'adv' 'wtedy' 'conj' 'i' 'qub' 'tylko' 'adv' 'wtedy' 'interp' ',' 'adv' 'gdy'
+;
+
+sformulowanieNieZaleznosciElementow :
+	'adv' 'niezależnie' 'prep' 'od' 'subst' 'tego' 'interp' ',' 'qub' 'gdy'
+;
+
+operatorModalny :
+	sformulowanieObowiazku
+	| sformulowanieObowiazkuNegacja
+	| sformulowanieKoniecznosci
+	| sformulowanieKoniecznosciNegacja
+	| sformulowanieMozliwosci
+	| istniejeMozliwoscZe
+	| sformulowaniePozwolenia
+;
+
+sformulowanieObowiazku :
+	musi | jestObowiazkiemAby
+;
+
+musi :
+	'fin' 'musieć' | 'fin' 'musić' 
+;
+
+jestObowiazkiemAby :
+	'fin' 'być' 'subst' 'obowiązek' 'interp' ',' 'comp' 'aby' 
+; 
+
+sformulowanieObowiazkuNegacja :
+	nieMoze | jestZabronioneAby
+;
+
+nieMoze :
+	'qub' 'nie' 'fin' 'móc'
+;
+
+jestZabronioneAby :
+	'fin' 'być' 'ppas' 'zabronić' 'interp' ',' 'comp' 'aby'
+;
+
+sformulowanieKoniecznosci :
+	zawsze | jestKonieczneAby
+;
+
+zawsze :
+	'adv' 'zawsze'
+;
+
+jestKonieczneAby :
+	'fin' 'być' 'adj' 'konieczny' 'interp' ',' 'comp' 'aby'
+;
+
+sformulowanieKoniecznosciNegacja :
+	nigdy | nieIstniejeMozliwoscZe
+;
+
+nigdy :
+	'adv' 'nigdy' 
+;
+
+nieIstniejeMozliwoscZe :
+	'qub' 'nie' 'fin' 'istnieć' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
+;
+
+sformulowanieMozliwosci :
+	istniejeMozliwoscZe
+;
+
+istniejeMozliwoscZe :
+	'fin' 'istnieć' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
+;
+
+sformulowaniePozwolenia :
+	moze | nieMusi
+;
+
+moze :
+	'qub' 'móc'
+;
+
+nieMusi :
+	'qub' 'nie' 'fin' 'musieć'
+;
+
+
+
 PolishLetter : [ęóąśłżźćńĘÓĄŚŁŻŹĆŃ] ;
 
 Letter : ('a' .. 'z' | 'A' .. 'Z' | '-' | PolishLetter) ;
@@ -229,4 +451,3 @@ Myslnik : '-' ;
 Cyfry : ('0' .. '9')+ ;
 
 WS : [ \t\r\n]+ -> skip; // pomiń białe znaki
-
