@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 
 import GUI.Window;
 import Model.Line;
+import Model.VocEntry;
 
 /**
  * 
@@ -171,6 +172,11 @@ public class WindowController {
 			// odblokowuje 2. KROK
 			if (!algorytm.getVocabulary().isEmpty()) {
 				window.getTagVocPanel().setVisible(true);
+				
+				for (VocEntry voc : algorytm.getVocabulary()) {
+					System.out.println(voc.toString());
+				}
+				
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 package GUI;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import Controller.WindowController;
