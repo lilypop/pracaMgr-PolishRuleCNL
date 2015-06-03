@@ -191,7 +191,7 @@ zlozonaImplikacja :
 ;
 
 pojecieRzeczownikoweRelacjaPojecieRzeczownikowe:
-	pojecieRzeczownikoweZOkresleniem
+	pojecieRzeczownikoweZOkresleniem*
 	relacja
 	pojecieRzeczownikoweZOkresleniem
 ;
@@ -202,9 +202,7 @@ ograniczenieLicznosciowe :
 ;
 
 sfurmulowanieLogiczneNegacja :
-	operatorLogiczny pojecieRzeczownikoweZOkresleniem 
-	relacja 
-	kwantyfikatorLicznosciowy pojecieRzeczownikowe
+	operatorLogiczny pojecieRzeczownikoweZOkresleniem relacja kwantyfikatorLicznosciowy pojecieRzeczownikowe
 ;
 
 pojecieRzeczownikoweZOkresleniem :
@@ -215,7 +213,6 @@ pojecieRzeczownikoweZOkresleniem :
 	| operatorModalnyDlaKoniecznosci kwantyfikatorOgolny pojecieRzeczownikowe
 	| operatorModalnyDlaKoniecznosci pojecieRzeczownikowe
 	| pojecieRzeczownikowe operatorModalnyDlaKoniecznosci
-	| ''
 ;
 
 kwantyfikatorOgolny :
@@ -223,7 +220,7 @@ kwantyfikatorOgolny :
 ;
 
 operatorModalnyDlaKoniecznosci :
-	'zawsze'
+	'adv' 'zawsze'
 ;
 
 operatorModalnyCalosc : 
@@ -304,15 +301,15 @@ logicznaNegacja :
 ;
 
 niejestPrawdaZe :
-	'qub' 'nie' 'fin' 'jest' 'subst' 'prawda' 'interp' ',' 'comp' 'że'
+	'qub' 'nie' 'fin' 'być' 'subst' 'prawda' 'comp' 'że'
 ;
 
 niePrawdaZe :
-	'qub' 'nie' 'subst' 'prawda' 'interp' ',' 'comp' 'że' 
+	'qub' 'nie' 'subst' 'prawda' 'comp' 'że' 
 ;
 
 nie :
-	'qub' 'nie'
+	'qub' 'nie' 
 ;
 
 koniunkcja :
@@ -351,11 +348,11 @@ tylkoGdy :
 ;
 
 wtedyItylkoWtedyGdy :
-	'adv' 'wtedy' 'conj' 'i' 'qub' 'tylko' 'adv' 'wtedy' 'interp' ',' 'adv' 'gdy'
+	'adv' 'wtedy' 'conj' 'i' 'qub' 'tylko' 'adv' 'wtedy' 'adv' 'gdy'
 ;
 
 sformulowanieNieZaleznosciElementow :
-	'adv' 'niezależnie' 'prep' 'od' 'subst' 'tego' 'interp' ',' 'qub' 'gdy'
+	'adv' 'niezależnie' 'prep' 'od' 'subst' 'tego'  'qub' 'gdy'
 ;
 
 operatorModalny :
@@ -377,7 +374,7 @@ musi :
 ;
 
 jestObowiazkiemAby :
-	'fin' 'być' 'subst' 'obowiązek' 'interp' ',' 'comp' 'aby' 
+	'fin' 'być' 'subst' 'obowiązek'  'comp' 'aby' 
 ; 
 
 sformulowanieObowiazkuNegacja :
@@ -389,7 +386,7 @@ nieMoze :
 ;
 
 jestZabronioneAby :
-	'fin' 'być' 'ppas' 'zabronić' 'interp' ',' 'comp' 'aby'
+	'fin' 'być' 'ppas' 'zabronić'  'comp' 'aby'
 ;
 
 sformulowanieKoniecznosci :
@@ -401,7 +398,7 @@ zawsze :
 ;
 
 jestKonieczneAby :
-	'fin' 'być' 'adj' 'konieczny' 'interp' ',' 'comp' 'aby'
+	'fin' 'być' 'adj' 'konieczny'  'comp' 'aby'
 ;
 
 sformulowanieKoniecznosciNegacja :
@@ -413,7 +410,7 @@ nigdy :
 ;
 
 nieIstniejeMozliwoscZe :
-	'qub' 'nie' 'fin' 'istnieć' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
+	'qub' 'nie' 'fin' 'istnieć' 'subst' 'możliwość'  'comp' 'że'
 ;
 
 sformulowanieMozliwosci :
@@ -421,7 +418,7 @@ sformulowanieMozliwosci :
 ;
 
 istniejeMozliwoscZe :
-	'fin' 'istnieć' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
+	'fin' 'istnieć' 'subst' 'możliwość'  'comp' 'że'
 ;
 
 sformulowaniePozwolenia :
@@ -439,6 +436,7 @@ nieMusi :
 
 
 PolishLetter : [ęóąśłżźćńĘÓĄŚŁŻŹĆŃ] ;
+
 
 Letter : ('a' .. 'z' | 'A' .. 'Z' | '-' | PolishLetter) ;
 

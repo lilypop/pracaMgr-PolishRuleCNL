@@ -14,6 +14,7 @@ import org.antlr.v4.runtime.misc.TestRig;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import Grammar.PolishRuleCNLParser.LogiczneSformulowaniaContext;
 import Grammar.PolishRuleCNLParser.SlownikContext;
 import Model.Representation;
 import Model.VocEntry;
@@ -54,7 +55,7 @@ public class VocabularySemanticAnalyzer {
 		fileWriter.flush();
 		fileWriter.close();
 
-		TestRig.main(new String[] { "Grammar.PolishRuleCNL", "slownik", "-gui", "/home/mkosior/voc_tag" });
+		TestRig.main(new String[] { "Grammar.PolishRuleCNL", "korzen", "-gui", "/home/mkosior/voc_tag" });
 	}
 
 	public VocabularySemanticAnalyzer(VocEntry vocEntry) {
@@ -91,12 +92,6 @@ public class VocabularySemanticAnalyzer {
 		parser.addErrorListener(new PolishRuleCNLErrorListener());
 	}
 
-	
-	public void walkRuleTree() {
-		System.out.println("VocEntry przed: " + vocEntry);
-		parser.korzen().toStringTree();
-		
-	}
 	
 	public void walkVocTree() {
 
@@ -137,14 +132,20 @@ public class VocabularySemanticAnalyzer {
 		}
 
 	}
+	
+	public void walkRuleTree() {
+//		parser.korzen().regula().logiczneSformulowania().sfurmulowanieLogiczneNegacja().operatorLogiczny().logicznaNegacja().niejestPrawdaZe();
+		
+		System.out.println("\n" + parser.korzen().toStringTree());
+	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		VocEntry vocEntry = new VocEntry();
 		vocEntry.setRepresentation(new Representation());
-		vocEntry.getRepresentation().setTaggedText("subst kierowca fin prowadzić subst samochód");
+		vocEntry.getRepresentation().setTaggedText("qub nie fin być subst prawda comp że subst klient fin posiadać adv dokładnie adj jeden subst kartka adj płatniczy");
 		VocabularySemanticAnalyzer analyzer = new VocabularySemanticAnalyzer(vocEntry);
-		analyzer.walkVocTree();
-
+		analyzer.walkRuleTree();
+		drawTree(vocEntry);
 	}
 
 }
