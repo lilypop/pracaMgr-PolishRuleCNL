@@ -155,7 +155,7 @@ public class Algorytm {
 	}
 	
 	
-	public void createVocabularyXMLFile(){
+	public boolean createVocabularyXMLFile(){
 		
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		try {
@@ -217,18 +217,21 @@ public class Algorytm {
 			transformer.transform(source, result);
 	 
 			JOptionPane.showMessageDialog(null, "Poprawnie otagowany słownik: " + vocXMLFilePath, "InfoBox: " + "PolishRuleCNL - Tools", JOptionPane.INFORMATION_MESSAGE);
+			return true;
 			
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 			wrongInfo(e.toString());
+			return false;
 		} catch (TransformerException e) {
 			e.printStackTrace();
 			wrongInfo(e.toString());
+			return false;
 		}
 	}
 	
 	
-	public void createRulesXMLFile(){
+	public boolean createRulesXMLFile(){
 		
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		try {
@@ -290,14 +293,16 @@ public class Algorytm {
 			transformer.transform(source, result);
 	 
 			JOptionPane.showMessageDialog(null, "Poprawnie otagowany słownik: " + ruleXMLFilePath, "InfoBox: " + "PolishRuleCNL - Tools", JOptionPane.INFORMATION_MESSAGE);
-			
+			return true;
 			
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 			wrongInfo(e.toString());
+			return false;
 		} catch (TransformerException e) {
 			e.printStackTrace();
 			wrongInfo(e.toString());
+			return false;
 		}
 	}
 	
@@ -361,6 +366,29 @@ public class Algorytm {
 
 	}
 	
+	public void parseRules(){
+		Iterator<RuleEntry> ruleIterator = rules.iterator();
+		while(ruleIterator.hasNext()){
+			RuleEntry ruleEntry = ruleIterator.next();
+			try {
+				parseRuleEntry(ruleEntry);
+				drawTree(ruleEntry);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				String errorMsg = "Błąd dla wpisu " + ruleEntry.getRepresentation().getBaseForm();
+				errorMsg += ":\n";
+				errorMsg += e.getMessage();
+				JOptionPane.showMessageDialog(null, errorMsg);
+				ruleIterator.remove();
+			}
+		}
+	}
+	
+	private void drawTree(RuleEntry ruleEntry){
+		System.out.println("maluj drzewo rule");
+	}
+	
 	
 	private void drawTree(VocEntry vocEntry) {
 		try {
@@ -374,9 +402,12 @@ public class Algorytm {
 	private void parseVocEntry(VocEntry vocEntry) {
 		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(vocEntry);
 		semanticAnalyzer.walkTree();
-		
 	}
 
+	private void parseRuleEntry(RuleEntry ruleEntry){
+		System.out.println("parsuj rule");
+	}
+	
 	public List<VocEntry> getVocabulary() {
 		return vocabulary;
 	}

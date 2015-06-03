@@ -16,7 +16,7 @@ public class VocEntry extends Entry{
 	public String toString() {
 		
 		return "VocEntry [ " + getRepresentation()
-				+ ", getAttributes()=" + getAttributes() + "]";
+				+ ", getAttributes()=" + getAttributes() + ", getMeaning()="  + "]";
 	}
 	
 	

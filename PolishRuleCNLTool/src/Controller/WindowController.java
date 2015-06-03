@@ -27,7 +27,7 @@ public class WindowController {
 	private Algorytm algorytm;
 	
 	private String ruleFile = "C:\\Users\\wposlednicka\\Documents\\rules.txt";
-	private String vocFile = "C:\\Users\\wposlednicka\\Documents\\rules.txt";
+	private String vocFile = "C:\\Users\\wposlednicka\\Documents\\voc.txt";
 	
 	public WindowController(){
 		window = new Window();
@@ -38,22 +38,38 @@ public class WindowController {
 	
 	public JComponent getWindow(){
 		window.setChooserPathButtonAction(createPathButtonAction());
+		
 		window.setLoadVocabularyButtonAction(createLoadVocabularyButtonAction());
 		window.setLoadRulesButtonAction(createLoadRuleButtonAction());
+		
 		window.setRunRulesTager(createRunRulesTagerButtonAction());
 		window.setRunVocTager(createRunVocTagerButtonAction());
-		window.setRunAntlrParser(createRunAntlrParserButtonAction());
+		
+		window.setRunRuleAntlrParserButtonAction(createRunRuleAntlrParserButtonAction());
+		window.setRunVocAntlrParserButtonAction(createRunVocAntlrParserButtonAction());
+		
 		return window.getWindow();
 	}
 	
 	
 
-	private ActionListener createRunAntlrParserButtonAction() {
+	private ActionListener createRunVocAntlrParserButtonAction() {
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				algorytm.parseVocabulary();
+				
+			}
+		};
+	}
+
+	private ActionListener createRunRuleAntlrParserButtonAction() {
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				algorytm.parseRules();
 			}
 		};
 	}
@@ -65,8 +81,10 @@ public class WindowController {
 			public void actionPerformed(ActionEvent e) {
 				
 				algorytm.fillWithTagerDateVocabulary();
-				algorytm.createVocabularyXMLFile();
-				
+				boolean validation = algorytm.createVocabularyXMLFile();
+				if (validation) {
+					window.getAntlrVocPanel().setVisible(true);
+				}
 			}
 		};
 	}
@@ -77,7 +95,10 @@ public class WindowController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				algorytm.fillWithTagerDateRules();
-				algorytm.createRulesXMLFile();
+				boolean validation = algorytm.createRulesXMLFile();
+				if (validation) {
+					window.getAntlrRulePanel().setVisible(true);
+				}
 				
 			}
 		};

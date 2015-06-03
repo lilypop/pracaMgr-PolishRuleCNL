@@ -29,7 +29,8 @@ public class Window {
 	private ActionListener chooserPathButtonAction;
 	private ActionListener runVocTager;
 	private ActionListener runRulesTager;
-	private ActionListener runAntlrParser;
+	private ActionListener runRuleAntlrParserButtonAction;
+	private ActionListener runVocAntlrParserButtonAction;
 	private JTextField loadPathText;
 	private JPanel tagVocPanel;
 	private JPanel tagRulePanel;
@@ -57,12 +58,12 @@ public class Window {
 		tagRulePanel.setVisible(false);
 		builder.add(tagRulePanel, cc.xy(4, 4));
 		
-		antlrVocPanel = createAntlrPanel("3. ETAP - Uruchomienie Antlr dla słownika", runAntlrParser);
-		antlrVocPanel.setVisible(true);
+		antlrVocPanel = createAntlrPanel("3. ETAP - Uruchomienie Antlr dla słownika", runVocAntlrParserButtonAction);
+		antlrVocPanel.setVisible(false);
 		builder.add(antlrVocPanel, cc.xy(2, 6));
 		
-		antlrRulePanel = createAntlrPanel("3. ETAP - Uruchomienie Antlr dla reguł", null);
-		antlrRulePanel.setVisible(true);
+		antlrRulePanel = createAntlrPanel("3. ETAP - Uruchomienie Antlr dla reguł", runRuleAntlrParserButtonAction);
+		antlrRulePanel.setVisible(false);
 		builder.add(antlrRulePanel, cc.xy(4, 6));
 		
 		return builder.getPanel();
@@ -188,13 +189,27 @@ public class Window {
 		this.antlrRulePanel = antlrRulePanel;
 	}
 
-	public ActionListener getRunAntlrParser() {
-		return runAntlrParser;
+	public ActionListener getRunRuleAntlrParserButtonAction() {
+		return runRuleAntlrParserButtonAction;
 	}
 
-	public void setRunAntlrParser(ActionListener runAntlrParser) {
-		this.runAntlrParser = runAntlrParser;
+	public void setRunRuleAntlrParserButtonAction(
+			ActionListener runRuleAntlrParserButtonAction) {
+		this.runRuleAntlrParserButtonAction = runRuleAntlrParserButtonAction;
 	}
+
+	public ActionListener getRunVocAntlrParserButtonAction() {
+		return runVocAntlrParserButtonAction;
+	}
+
+	public void setRunVocAntlrParserButtonAction(
+			ActionListener runVocAntlrParserButtonAction) {
+		this.runVocAntlrParserButtonAction = runVocAntlrParserButtonAction;
+	}
+
+	
+
+	
 	
 	
 

@@ -20,7 +20,29 @@ slownik :
 ;
 
 regula :
-	ograniczenieLicznosciowe
+	ograniczenieLicznosciowe | logiczneSformulowania | modalneSformulowania
+;
+
+logiczneSformulowania :
+	sfurmulowanieLogiczneNegacja
+	| sformulowanieRownowaznosc
+	| sformulowanieImplikacji
+;
+
+modalneSformulowania :
+	sformułowanieModalneProste
+	| sformułowanieModalneZlozone
+;
+
+sformułowanieModalneZlozone :
+	pojecieRzeczownikoweZOkresleniem
+	operatorModalny
+	pojecieRzeczownikoweZOkresleniem
+;
+
+sformułowanieModalneProste :
+	operatorModalny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
 ;
 
 pojecieRzeczownikowe :
@@ -145,9 +167,55 @@ czasownikByc :
 	'fin' 'być'
 ;
 
+sformulowanieRownowaznosc :
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+	operatorLogiczny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe	
+;
+
+sformulowanieImplikacji :
+	prostaImplikacja | zlozonaImplikacja
+;
+
+prostaImplikacja :
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+	operatorLogiczny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+;
+
+zlozonaImplikacja :
+	operatorLogiczny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+	operatorLogiczny
+	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+;
+
+pojecieRzeczownikoweRelacjaPojecieRzeczownikowe:
+	pojecieRzeczownikoweZOkresleniem
+	relacja
+	pojecieRzeczownikoweZOkresleniem
+;
+
 ograniczenieLicznosciowe :
 	kwantyfikatorOgolny pojecieRzeczownikowe operatorModalnyDlaKoniecznosci
 	relacja kwantyfikatorLicznosciowy pojecieRzeczownikowe
+;
+
+sfurmulowanieLogiczneNegacja :
+	operatorLogiczny pojecieRzeczownikoweZOkresleniem 
+	relacja 
+	kwantyfikatorLicznosciowy pojecieRzeczownikowe
+;
+
+pojecieRzeczownikoweZOkresleniem :
+	 pojecieRzeczownikowe 
+	| kwantyfikatorOgolny pojecieRzeczownikowe 
+	| pojecieRzeczownikowe kwantyfikatorOgolny 
+	| operatorModalnyCalosc pojecieRzeczownikowe
+	| operatorModalnyDlaKoniecznosci kwantyfikatorOgolny pojecieRzeczownikowe
+	| operatorModalnyDlaKoniecznosci pojecieRzeczownikowe
+	| pojecieRzeczownikowe operatorModalnyDlaKoniecznosci
+	| ''
 ;
 
 kwantyfikatorOgolny :
@@ -157,6 +225,10 @@ kwantyfikatorOgolny :
 operatorModalnyDlaKoniecznosci :
 	'zawsze'
 ;
+
+operatorModalnyCalosc : 
+	 'adj' 'wszystko'
+;	
 
 kwantyfikatorLicznosciowy :
 	minimumN
@@ -222,6 +294,7 @@ operatorLogiczny :
 	| dysjunkcja
 	| dysjunkcjaRozlaczna
 	| implikacja
+	| koniecImplikacji
 	| rownowaznosc
 	| sformulowanieNieZaleznosciElementow
 ;
@@ -231,7 +304,7 @@ logicznaNegacja :
 ;
 
 niejestPrawdaZe :
-	'qub' 'nie' 'fin' 'jest' 'subst' 'prawdą' 'interp' ',' 'comp' 'że'
+	'qub' 'nie' 'fin' 'jest' 'subst' 'prawda' 'interp' ',' 'comp' 'że'
 ;
 
 niePrawdaZe :
@@ -263,7 +336,11 @@ dysjunkcjaRozlaczna :
 ;
 
 implikacja :
-	'comp' 'jesli'  
+	'comp' 'jeśli'  
+;
+
+koniecImplikacji :
+	'subst' 'to'
 ;
 
 rownowaznosc :
@@ -300,7 +377,7 @@ musi :
 ;
 
 jestObowiazkiemAby :
-	'fin' 'jest' 'subst' 'obowiązkiem' 'interp' ',' 'comp' 'aby' 
+	'fin' 'być' 'subst' 'obowiązek' 'interp' ',' 'comp' 'aby' 
 ; 
 
 sformulowanieObowiazkuNegacja :
@@ -308,11 +385,11 @@ sformulowanieObowiazkuNegacja :
 ;
 
 nieMoze :
-	'qub' 'nie' 'fin' 'może'
+	'qub' 'nie' 'fin' 'móc'
 ;
 
 jestZabronioneAby :
-	'fin' 'jest' 'ppas' 'zabronione' 'interp' ',' 'comp' 'aby'
+	'fin' 'być' 'ppas' 'zabronić' 'interp' ',' 'comp' 'aby'
 ;
 
 sformulowanieKoniecznosci :
@@ -324,7 +401,7 @@ zawsze :
 ;
 
 jestKonieczneAby :
-	'fin' 'jest' 'adj' 'konieczne' 'interp' ',' 'comp' 'aby'
+	'fin' 'być' 'adj' 'konieczny' 'interp' ',' 'comp' 'aby'
 ;
 
 sformulowanieKoniecznosciNegacja :
@@ -336,7 +413,7 @@ nigdy :
 ;
 
 nieIstniejeMozliwoscZe :
-	'qub' 'nie' 'fin' 'istnieje' 'subst' 'mozliwosc' 'interp' ',' 'comp' 'że'
+	'qub' 'nie' 'fin' 'istnieć' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
 ;
 
 sformulowanieMozliwosci :
@@ -344,7 +421,7 @@ sformulowanieMozliwosci :
 ;
 
 istniejeMozliwoscZe :
-	'fin' 'istnieje' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
+	'fin' 'istnieć' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
 ;
 
 sformulowaniePozwolenia :
@@ -352,11 +429,11 @@ sformulowaniePozwolenia :
 ;
 
 moze :
-	'qub' 'może'
+	'qub' 'móc'
 ;
 
 nieMusi :
-	'qub' 'nie' 'fin' 'musi'
+	'qub' 'nie' 'fin' 'musieć'
 ;
 
 
