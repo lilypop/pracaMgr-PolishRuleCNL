@@ -9,6 +9,20 @@
 	  package Grammar;
 	}
 
+PolishLetter : [ęóąśłżźćńĘÓĄŚŁŻŹĆŃ] ;
+
+Letter : ('a' .. 'z' | 'A' .. 'Z' | '-' | PolishLetter) ;
+
+Identifier : Letter+ ;
+
+Srednik : ';' ;
+
+Myslnik : '-' ;
+
+Cyfry : ('0' .. '9')+ ;
+
+WS : [ \t\r\n]+ -> skip; // pomiń białe znaki
+
 korzen :
 	slownik 
 	| regula
@@ -35,9 +49,7 @@ modalneSformulowania :
 ;
 
 sformułowanieModalneZlozone :
-	pojecieRzeczownikoweZOkresleniem
-	operatorModalny
-	pojecieRzeczownikoweZOkresleniem
+	pojecieRzeczownikoweZOkresleniem operatorModalny bezokolicznik pojecieRzeczownikoweZOkresleniem
 ;
 
 sformułowanieModalneProste :
@@ -54,28 +66,6 @@ pojecieRzeczownikowe :
 	| rzeczownikOkreslonyPrzymiotnikiem rzeczownikOkreslajacy wyrazeniePrzyimkowe
 	| rzeczownik wyrazeniePrzyimkowe
 	| rzeczownik rzeczownikOkreslajacy wyrazeniePrzyimkowe
-//	| RzeczownikZImieslowemPrzymCzynnymPseudo
-;
-
-
-//RzeczownikZImieslowemPrzymCzynnymPseudo:
-//	pojecieRzeczownikowe imieslowPrzymiotnikowyCzynnyPseudo pojecieRzeczownikowe
-//	| pojecieRzeczownikowe imieslowPrzymiotnikowyCzynnyPseudo
-//	| pojecieRzeczownikowe imieslowPrzymiotnikowyCzynnyPseudo wyrazeniePrzyimkowe
-//	
-//;
-
-rzeczownik :
-	'subst' Identifier
-;
-
-przymiotnik :
-	'adj' Identifier
-	| imieslowPrzymiotnikowyBierny
-;
-
-imieslowPrzymiotnikowyBierny :
-	'ppas' Identifier
 ;
 
 rzeczownikOkreslonyPrzymiotnikiem :
@@ -94,18 +84,6 @@ wyrazeniePrzyimkowe :
 	| przyimek pojecieRzeczownikowe spójnik pojecieRzeczownikowe
 ;
 
-spójnik :
-	'conj' 'i'
-	| 'conj' 'oraz'
-	| 'conj' 'a'
-	| 'conj' 'lub'
-;
-
-przyimek :
-	'prep' 'z'
-	| 'prep' Identifier
-;
-
 fakt :
 	binarnyFakt
 	| charakterystyka
@@ -119,19 +97,11 @@ charakterystyka :
 	pojecieRzeczownikowe cechaRzeczownika
 ;
 
-//imieslowPrzymiotnikowyCzynnyPseudo : 'pact' IDENTIFIER | 'pact' IDENTIFIER 'qub' 'się' | 'praet' IDENTIFIER ;
-
 cechaRzeczownika :
 	czasownikByc pojecieRzeczownikowe
 	| czasownikByc przyimek pojecieRzeczownikowe
 	| czasownikByc przymiotnik
 	| czasownik
-;
-
-czasownik :
-	'fin' Identifier
-	| 'fin' Identifier 'qub' 'się'
-	| 'fin' 'składać'
 ;
 
 relacja :
@@ -145,6 +115,7 @@ asocjacja :
 	czasownik
 	| czasownik przyimek
 	| czasownikByc przymiotnik przyimek
+	| imieslowPrzymiotnikowyCzynnyPseudo
 ;
 
 caloscCzesc :
@@ -180,7 +151,7 @@ sformulowanieImplikacji :
 prostaImplikacja :
 	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
 	operatorLogiczny
-	pojecieRzeczownikoweRelacjaPojecieRzeczownikowe
+	(pojecieRzeczownikoweRelacjaPojecieRzeczownikowe | relacjaPojecieRzeczownikowe)
 ;
 
 zlozonaImplikacja :
@@ -192,6 +163,11 @@ zlozonaImplikacja :
 
 pojecieRzeczownikoweRelacjaPojecieRzeczownikowe:
 	pojecieRzeczownikoweZOkresleniem
+	relacja
+	pojecieRzeczownikoweZOkresleniem
+;
+
+relacjaPojecieRzeczownikowe :
 	relacja
 	pojecieRzeczownikoweZOkresleniem
 ;
@@ -223,7 +199,7 @@ kwantyfikatorOgolny :
 ;
 
 operatorModalnyDlaKoniecznosci :
-	'zawsze'
+	'adv' 'zawsze'
 ;
 
 operatorModalnyCalosc : 
@@ -304,11 +280,11 @@ logicznaNegacja :
 ;
 
 niejestPrawdaZe :
-	'qub' 'nie' 'fin' 'jest' 'subst' 'prawda' 'interp' ',' 'comp' 'że'
+	'qub' 'nie' 'fin' 'być' 'subst' 'prawda'  'comp' 'że'
 ;
 
 niePrawdaZe :
-	'qub' 'nie' 'subst' 'prawda' 'interp' ',' 'comp' 'że' 
+	'qub' 'nie' 'subst' 'prawda'  'comp' 'że' 
 ;
 
 nie :
@@ -336,11 +312,11 @@ dysjunkcjaRozlaczna :
 ;
 
 implikacja :
-	'comp' 'jeśli'  
+	'comp' 'jeśli'
 ;
 
 koniecImplikacji :
-	'subst' 'to'
+	'pred' 'to'
 ;
 
 rownowaznosc :
@@ -351,11 +327,11 @@ tylkoGdy :
 ;
 
 wtedyItylkoWtedyGdy :
-	'adv' 'wtedy' 'conj' 'i' 'qub' 'tylko' 'adv' 'wtedy' 'interp' ',' 'adv' 'gdy'
+	'adv' 'wtedy' 'conj' 'i' 'qub' 'tylko' 'adv' 'wtedy'  'adv' 'gdy'
 ;
 
 sformulowanieNieZaleznosciElementow :
-	'adv' 'niezależnie' 'prep' 'od' 'subst' 'tego' 'interp' ',' 'qub' 'gdy'
+	'adv' 'niezależnie' 'prep' 'od' 'subst' 'tego'  'qub' 'gdy'
 ;
 
 operatorModalny :
@@ -377,7 +353,7 @@ musi :
 ;
 
 jestObowiazkiemAby :
-	'fin' 'być' 'subst' 'obowiązek' 'interp' ',' 'comp' 'aby' 
+	'fin' 'być' 'subst' 'obowiązek'  'comp' 'aby' 
 ; 
 
 sformulowanieObowiazkuNegacja :
@@ -389,7 +365,7 @@ nieMoze :
 ;
 
 jestZabronioneAby :
-	'fin' 'być' 'ppas' 'zabronić' 'interp' ',' 'comp' 'aby'
+	'fin' 'być' 'ppas' 'zabronić'  'comp' 'aby'
 ;
 
 sformulowanieKoniecznosci :
@@ -401,7 +377,7 @@ zawsze :
 ;
 
 jestKonieczneAby :
-	'fin' 'być' 'adj' 'konieczny' 'interp' ',' 'comp' 'aby'
+	'fin' 'być' 'adj' 'konieczny'  'comp' 'aby'
 ;
 
 sformulowanieKoniecznosciNegacja :
@@ -413,7 +389,7 @@ nigdy :
 ;
 
 nieIstniejeMozliwoscZe :
-	'qub' 'nie' 'fin' 'istnieć' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
+	'qub' 'nie' 'fin' 'istnieć' 'subst' 'możliwość'  'comp' 'że'
 ;
 
 sformulowanieMozliwosci :
@@ -421,7 +397,7 @@ sformulowanieMozliwosci :
 ;
 
 istniejeMozliwoscZe :
-	'fin' 'istnieć' 'subst' 'możliwość' 'interp' ',' 'comp' 'że'
+	'fin' 'istnieć' 'subst' 'możliwość'  'comp' 'że'
 ;
 
 sformulowaniePozwolenia :
@@ -436,19 +412,46 @@ nieMusi :
 	'qub' 'nie' 'fin' 'musieć'
 ;
 
+rzeczownik :
+	'subst' Identifier
+;
 
+przymiotnik :
+	'adj' Identifier
+	| imieslowPrzymiotnikowyBierny
+;
 
-PolishLetter : [ęóąśłżźćńĘÓĄŚŁŻŹĆŃ] ;
+imieslowPrzymiotnikowyCzynnyPseudo : 
+	'pact' Identifier 
+	| 'pact' Identifier 'qub' 'się' 
+	| 'praet' Identifier 
+;
 
-Letter : ('a' .. 'z' | 'A' .. 'Z' | '-' | PolishLetter) ;
+czasownik :
+	'fin' Identifier
+	| 'fin' Identifier 'qub' 'się'
+	| 'fin' 'składać'
+;
 
-Identifier : Letter+ ;
+bezokolicznik :
+	'inf' Identifier
+	| 'inf' Identifier 'qub' 'się'
+;
 
-Srednik : ';' ;
+spójnik :
+	'conj' 'i'
+	| 'conj' 'oraz'
+	| 'conj' 'a'
+	| 'conj' 'lub'
+;
 
-Myslnik : '-' ;
+przyimek :
+	'prep' 'z'
+	| 'prep' 'o'
+	| 'prep' Identifier
+;
 
-Cyfry : ('0' .. '9')+ ;
-
-WS : [ \t\r\n]+ -> skip; // pomiń białe znaki
+imieslowPrzymiotnikowyBierny :
+	'ppas' Identifier
+;
 
