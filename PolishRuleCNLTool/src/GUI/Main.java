@@ -15,7 +15,7 @@ public class Main {
 	
 	public void run(){
 		frame = new JFrame();
-		windowController = new WindowController();
+		windowController = new WindowController("/home/mkosior/Pulpit/rule", "/home/mkosior/Pulpit/voc");
 		frame.add(windowController.getWindow());
 		frame.setTitle("PolishRuleCNL - Tools");
 		frame.setVisible(true);

@@ -24,11 +24,18 @@ public class WindowController {
 	private Window window;
 	private ArrayList<Line> vocabularyLine;
 	private ArrayList<Line> rulesLine;
-	private String loadPath;
+	private String vocLoadPath;
+	private String vocRulePath;
 	private Algorytm algorytm;
 	
 	private String ruleFile = "C:\\Users\\wposlednicka\\Documents\\rules.txt";
 	private String vocFile = "C:\\Users\\wposlednicka\\Documents\\voc.txt";
+	
+	public WindowController(String ruleFile, String vocFile){
+		this();
+		this.ruleFile = ruleFile;
+		this.vocFile = vocFile;
+	}
 	
 	public WindowController(){
 		window = new Window();
@@ -38,7 +45,8 @@ public class WindowController {
 	}
 	
 	public JComponent getWindow(){
-		window.setChooserPathButtonAction(createPathButtonAction());
+		window.setChooserVocPathButtonAction(createVocPathButtonAction());
+		window.setChooserRulePathButtonAction(createRulePathButtonAction());
 		
 		window.setLoadVocabularyButtonAction(createLoadVocabularyButtonAction());
 		window.setLoadRulesButtonAction(createLoadRuleButtonAction());
@@ -105,7 +113,7 @@ public class WindowController {
 		};
 	}
 
-	private ActionListener createPathButtonAction(){
+	private ActionListener createVocPathButtonAction(){
 		return new ActionListener() {
 			
 			@Override
@@ -114,8 +122,24 @@ public class WindowController {
 		        int returnValue = fileChooser.showOpenDialog(null);
 					if (returnValue == JFileChooser.APPROVE_OPTION) {
 						File selectedFile = fileChooser.getSelectedFile();
-					    loadPath = selectedFile.getPath();
-					    window.getLoadPathText().setText(loadPath);
+					    vocLoadPath = selectedFile.getPath();
+					    window.getLoadVocPathText().setText(vocLoadPath);
+					}
+			}
+		};
+	}
+	
+	private ActionListener createRulePathButtonAction(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+		        int returnValue = fileChooser.showOpenDialog(null);
+					if (returnValue == JFileChooser.APPROVE_OPTION) {
+						File selectedFile = fileChooser.getSelectedFile();
+					    vocRulePath = selectedFile.getPath();
+					    window.getLoadRulesPathText().setText(vocRulePath);
 					}
 			}
 		};
@@ -129,11 +153,12 @@ public class WindowController {
 		return loadDate(vocabularyLine, false);
 	}
 	
-	private ActionListener loadDate(ArrayList<Line> list, boolean rules){
+	private ActionListener loadDate(final ArrayList<Line> list, final boolean rules){
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				list.clear();
 				File file = null;
 				
 				file = chooseFile(rules);
@@ -143,9 +168,12 @@ public class WindowController {
 					sc = new Scanner(file);
 					while (sc.hasNextLine()) {
 						String line = sc.nextLine();
-						line = line.replaceAll("\t", "");
-						Line stringLine = new Line(line);
-						list.add(stringLine);
+						if (line.trim().length() > 0 && !line.startsWith("#")) {
+							line = line.replaceAll("\t", "");
+							line = line.replaceAll(",", "");
+							Line stringLine = new Line(line);
+							list.add(stringLine);
+						}
 					}
 					
 					generateVocOrRuleList(list, rules);

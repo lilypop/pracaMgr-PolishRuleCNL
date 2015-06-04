@@ -21,6 +21,7 @@ import org.w3c.dom.Element;
 import Grammar.VocabularySemanticAnalyzer;
 import Model.Attribute;
 import Model.AttributeName;
+import Model.Entry;
 import Model.Line;
 import Model.Representation;
 import Model.RuleEntry;
@@ -385,12 +386,8 @@ public class Algorytm {
 		}
 	}
 	
-	private void drawTree(RuleEntry ruleEntry){
-		System.out.println("maluj drzewo rule");
-	}
 	
-	
-	private void drawTree(VocEntry vocEntry) {
+	private void drawTree(Entry vocEntry) {
 		try {
 			VocabularySemanticAnalyzer.drawTree(vocEntry);
 		} catch (Exception e) {
@@ -401,11 +398,13 @@ public class Algorytm {
 
 	private void parseVocEntry(VocEntry vocEntry) {
 		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(vocEntry);
-		semanticAnalyzer.walkTree();
+		semanticAnalyzer.walkVocTree();
 	}
 
 	private void parseRuleEntry(RuleEntry ruleEntry){
 		System.out.println("parsuj rule");
+		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(ruleEntry);
+		semanticAnalyzer.walkRuleTree();
 	}
 	
 	public List<VocEntry> getVocabulary() {

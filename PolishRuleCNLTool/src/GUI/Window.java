@@ -26,12 +26,14 @@ public class Window {
 	private CellConstraints cc;
 	private ActionListener loadRulesButtonAction;
 	private ActionListener loadVocabularyButtonAction;
-	private ActionListener chooserPathButtonAction;
+	private ActionListener chooserVocPathButtonAction;
+	private ActionListener chooserRulePathButtonAction;
 	private ActionListener runVocTager;
 	private ActionListener runRulesTager;
 	private ActionListener runRuleAntlrParserButtonAction;
 	private ActionListener runVocAntlrParserButtonAction;
-	private JTextField loadPathText;
+	private JTextField loadRulesPathText;
+	private JTextField loadVocPathText;
 	private JPanel tagVocPanel;
 	private JPanel tagRulePanel;
 	private JPanel antlrVocPanel;
@@ -47,8 +49,11 @@ public class Window {
 		builder = new PanelBuilder(layout);
 		cc = new CellConstraints();
 		
-		builder.add(createLoadPanel("1.ETAP - Wczytywanie słownika", loadVocabularyButtonAction), cc.xy(2, 2));
-		builder.add(createLoadPanel("1.ETAP - Wczytywanie reguł", loadRulesButtonAction), cc.xy(4, 2));
+		loadVocPathText = new JTextField();
+		loadRulesPathText = new JTextField();
+		
+		builder.add(createLoadPanel("1.ETAP - Wczytywanie słownika", loadVocPathText, loadVocabularyButtonAction, chooserVocPathButtonAction), cc.xy(2, 2));
+		builder.add(createLoadPanel("1.ETAP - Wczytywanie reguł", loadRulesPathText, loadRulesButtonAction, chooserRulePathButtonAction), cc.xy(4, 2));
 
 		tagVocPanel = createTagerPanel("2.ETAP - Tagowanie słownika: ", runVocTager);
 		tagVocPanel.setVisible(false);
@@ -91,15 +96,14 @@ public class Window {
 		return panel;
 	}
 	
-	private JPanel createLoadPanel(String title, ActionListener loadButtonAction){
+	private JPanel createLoadPanel(String title, JTextField pathTextField, ActionListener loadButtonAction, ActionListener chooserPathButtonAction){
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEADING));
 		JButton loadButton = new JButton("Wczytaj");
 		loadButton.addActionListener(loadButtonAction);
 		panel.add(loadButton);
-		loadPathText = new JTextField();
-		loadPathText.setPreferredSize(new Dimension(400, 25));
-		panel.add(loadPathText);
+		pathTextField.setPreferredSize(new Dimension(400, 25));
+		panel.add(pathTextField);
 		JButton pathChooser = new JButton("...");
 		pathChooser.addActionListener(chooserPathButtonAction);
 		panel.add(pathChooser);
@@ -109,11 +113,15 @@ public class Window {
 	}
 
 	public ActionListener getChooserPathButtonAction() {
-		return chooserPathButtonAction;
+		return chooserVocPathButtonAction;
 	}
 
-	public void setChooserPathButtonAction(ActionListener chooserPathButtonAction) {
-		this.chooserPathButtonAction = chooserPathButtonAction;
+	public void setChooserVocPathButtonAction(ActionListener chooserPathButtonAction) {
+		this.chooserVocPathButtonAction = chooserPathButtonAction;
+	}
+	
+	public void setChooserRulePathButtonAction(ActionListener chooserPathButtonAction) {
+		this.chooserRulePathButtonAction = chooserPathButtonAction;
 	}
 
 	public ActionListener getLoadRulesButtonAction() {
@@ -133,12 +141,12 @@ public class Window {
 		this.loadVocabularyButtonAction = loadVocabularyButtonAction;
 	}
 	
-	public JTextField getLoadPathText() {
-		return loadPathText;
+	public JTextField getLoadRulesPathText() {
+		return loadRulesPathText;
 	}
 
-	public void setLoadPathText(JTextField pathText) {
-		this.loadPathText = pathText;
+	public void setLoadRulesPathText(JTextField loadRulesPathText) {
+		this.loadRulesPathText = loadRulesPathText;
 	}
 
 	public ActionListener getRunVocTager() {
@@ -207,14 +215,14 @@ public class Window {
 		this.runVocAntlrParserButtonAction = runVocAntlrParserButtonAction;
 	}
 
-	
+	public JTextField getLoadVocPathText() {
+		return loadVocPathText;
+	}
 
-	
-	
-	
+	public void setLoadVocPathText(JTextField loadVocPathText) {
+		this.loadVocPathText = loadVocPathText;
+	}
 
-	
-	
 	
 	
 }

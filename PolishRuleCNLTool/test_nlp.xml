@@ -4,48 +4,33 @@
  <chunk id="ch1" type="p">
   <sentence id="s1">
    <tok>
-    <orth>klient</orth>
-    <lex disamb="1"><base>klient</base><ctag>subst:sg:nom:m1</ctag></lex>
+    <orth>Bank</orth>
+    <lex disamb="1"><base>bank</base><ctag>subst:sg:nom:m3</ctag></lex>
    </tok>
    <tok>
-    <orth>dostanie</orth>
-    <lex disamb="1"><base>dostać</base><ctag>fin:sg:ter:perf</ctag></lex>
+    <orth>musi</orth>
+    <lex disamb="1"><base>musieć</base><ctag>fin:sg:ter:imperf</ctag></lex>
+    <lex disamb="1"><base>musić</base><ctag>fin:sg:ter:imperf</ctag></lex>
    </tok>
    <tok>
-    <orth>kredyt</orth>
-    <lex disamb="1"><base>kredyt</base><ctag>subst:sg:acc:m3</ctag></lex>
+    <orth>poinformować</orth>
+    <lex disamb="1"><base>poinformować</base><ctag>inf:perf</ctag></lex>
    </tok>
    <tok>
-    <orth>wtedy</orth>
-    <lex disamb="1"><base>wtedy</base><ctag>adv</ctag></lex>
+    <orth>dłużnika</orth>
+    <lex disamb="1"><base>dłużnik</base><ctag>subst:sg:acc:m1</ctag></lex>
    </tok>
    <tok>
-    <orth>i</orth>
-    <lex disamb="1"><base>i</base><ctag>conj</ctag></lex>
+    <orth>o</orth>
+    <lex disamb="1"><base>o</base><ctag>prep:loc</ctag></lex>
    </tok>
    <tok>
-    <orth>tylko</orth>
-    <lex disamb="1"><base>tylko</base><ctag>qub</ctag></lex>
+    <orth>kwocie</orth>
+    <lex disamb="1"><base>kwota</base><ctag>subst:sg:loc:f</ctag></lex>
    </tok>
    <tok>
-    <orth>wtedy</orth>
-    <lex disamb="1"><base>wtedy</base><ctag>adv</ctag></lex>
-   </tok>
-   <tok>
-    <orth>gdy</orth>
-    <lex disamb="1"><base>gdy</base><ctag>adv</ctag></lex>
-   </tok>
-   <tok>
-    <orth>klient</orth>
-    <lex disamb="1"><base>klient</base><ctag>subst:sg:nom:m1</ctag></lex>
-   </tok>
-   <tok>
-    <orth>dostarczy</orth>
-    <lex disamb="1"><base>dostarczyć</base><ctag>fin:sg:ter:perf</ctag></lex>
-   </tok>
-   <tok>
-    <orth>dokumenty</orth>
-    <lex disamb="1"><base>dokument</base><ctag>subst:pl:acc:m3</ctag></lex>
+    <orth>zadłużenia</orth>
+    <lex disamb="1"><base>zadłużenie</base><ctag>subst:sg:gen:n</ctag></lex>
    </tok>
   </sentence>
  </chunk>
