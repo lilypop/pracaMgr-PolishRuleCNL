@@ -2,6 +2,8 @@ package Grammar;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BufferedTokenStream;
@@ -15,6 +17,7 @@ import Model.Entry;
 import Model.Representation;
 import Model.RuleEntry;
 import Model.VocEntry;
+import Model.Vocabulary;
 
 public class VocabularySemanticAnalyzer {
 
@@ -22,7 +25,9 @@ public class VocabularySemanticAnalyzer {
 	private PolishRuleCNLParser parser;
 	private PolishRuleCNLVocListener treeListener = new PolishRuleCNLVocListener();
 	private Entry entry;
-
+	private Vocabulary vocabulary;
+	private List<VocEntry> newEtries = new ArrayList<VocEntry>();
+	
 	public static void drawTree(Entry vocEntry) throws Exception {
 		File file = new File("rules_tmp.txt");
 		FileWriter fileWriter = new FileWriter(file);
@@ -34,8 +39,9 @@ public class VocabularySemanticAnalyzer {
 				"rules_tmp.txt" });
 	}
 
-	public VocabularySemanticAnalyzer(Entry entry) {
+	public VocabularySemanticAnalyzer(Entry entry, Vocabulary vocabulary) {
 		this.entry = entry;
+		this.vocabulary = vocabulary;
 		reset();
 	}
 
@@ -107,8 +113,11 @@ public class VocabularySemanticAnalyzer {
 		} else {
 			throw new RuntimeException("Wpis nie jest wpisem słownikowym");
 		}
+		
+		newEtries.addAll(walker.getIsRoleOfFactTypes());
 
 		System.out.println("VocEntry po: " + entry);
+		System.out.println("New entries count: " + walker.getIsRoleOfFactTypes().size());
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -116,12 +125,15 @@ public class VocabularySemanticAnalyzer {
 		vocEntry.setRepresentation(new Representation());
 		vocEntry.getRepresentation().setTaggedText(
 				"fin być adj konieczny comp aby subst bank adj poinformal subst dłużnik");// prep o subst kwota subst zadłużenie");
-		VocabularySemanticAnalyzer analyzer = new VocabularySemanticAnalyzer(
-				vocEntry);
+		VocabularySemanticAnalyzer analyzer = new VocabularySemanticAnalyzer(vocEntry, null);
 		analyzer.walkRuleTree();
 		
 		drawTree(vocEntry);
 
+	}
+
+	public List<VocEntry> getNewEtries() {
+		return newEtries;
 	}
 
 }

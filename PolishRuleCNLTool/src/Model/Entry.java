@@ -2,6 +2,8 @@ package Model;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * 
  * @author wposlednicka
@@ -9,15 +11,18 @@ import java.util.List;
  */
 public abstract class Entry {
 
-	private Representation representation;
+	@XmlElement(name = "Representation")
+	private Representation Representation;
     private List<Attribute> attributes;
+    
+//    @javax.xml.bind.annotation.XmlElement(name = "meaning", type=Meaning.class)
     private Meaning meaning;
 	
     public Representation getRepresentation() {
-		return representation;
+		return Representation;
 	}
 	public void setRepresentation(Representation representation) {
-		this.representation = representation;
+		this.Representation = representation;
 	}
 	public List<Attribute> getAttributes() {
 		return attributes;
@@ -35,7 +40,7 @@ public abstract class Entry {
 	}
 	@Override
 	public String toString() {
-		return "Entry [Representation=" + representation + ", Attributes="
+		return "Entry [Representation=" + Representation + ", Attributes="
 				+ attributes + "]";
 	}
 

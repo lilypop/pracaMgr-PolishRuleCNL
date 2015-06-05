@@ -6,12 +6,12 @@ package Model;
  */
 public class Attribute {
 
-	 public AttributeName Name;
-     public String Value;
+	 private AttributeName Name;
+	 private String Value;
 
-     public String TaggedValue;
-     public String BaseForm;
-     public String VetisText;
+	 private String taggedValue;
+	 private String baseForm;
+	 private String vetisText;
 
 
      public Attribute() {}
@@ -20,8 +20,14 @@ public class Attribute {
      {
          this.Name = name;
          this.Value = value;
-         this.VetisText = vetisText;
+         this.vetisText = vetisText;
      }
+
+	@Override
+	public String toString() {
+		return "Attribute [Name=" + Name + ", Value=" + Value + ", VetisText="
+				+ vetisText + "]";
+	}
 
 	public AttributeName getName() {
 		return Name;
@@ -40,33 +46,27 @@ public class Attribute {
 	}
 
 	public String getTaggedValue() {
-		return TaggedValue;
+		return taggedValue;
 	}
 
 	public void setTaggedValue(String taggedValue) {
-		TaggedValue = taggedValue;
+		this.taggedValue = taggedValue;
 	}
 
 	public String getBaseForm() {
-		return BaseForm;
+		return baseForm;
 	}
 
 	public void setBaseForm(String baseForm) {
-		BaseForm = baseForm;
+		this.baseForm = baseForm;
 	}
 
 	public String getVetisText() {
-		return VetisText;
+		return vetisText;
 	}
 
 	public void setVetisText(String vetisText) {
-		VetisText = vetisText;
-	}
-
-	@Override
-	public String toString() {
-		return "Attribute [Name=" + Name + ", Value=" + Value + ", VetisText="
-				+ VetisText + "]";
+		this.vetisText = vetisText;
 	}
      
      

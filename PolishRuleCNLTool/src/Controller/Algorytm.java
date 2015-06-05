@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,6 +29,7 @@ import Model.Line;
 import Model.Representation;
 import Model.RuleEntry;
 import Model.VocEntry;
+import Model.Vocabulary;
 
 /**
  * 
@@ -34,7 +38,7 @@ import Model.VocEntry;
  */
 public class Algorytm {
 	
-	private List<VocEntry> vocabulary;
+	private Vocabulary vocabulary;
 	private List<RuleEntry> rules;
 	private ArrayList<AttributeName> attributeNames;
 	private FormatXML formatXML;
@@ -73,7 +77,9 @@ public class Algorytm {
 	}
 
 	public void generateVocabulary(ArrayList<Line> vocabularyLine) {
-		vocabulary = new ArrayList<VocEntry>();
+		vocabulary = new Vocabulary();
+		vocabulary.setEntries(new ArrayList<VocEntry>());
+				
 		VocEntry entry = null;
 
 		for (Line line : vocabularyLine) {
@@ -102,13 +108,13 @@ public class Algorytm {
 					Representation rep = new Representation(line.getValue());
 					rep.setVetisText(createVetisText(line.getValue()));
 					entry.setRepresentation(rep);
-					vocabulary.add(entry);
+					vocabulary.getEntries().add(entry);
 				}
 			}
 
 		}
 
-		System.out.println("Wczytano do słownika: " + vocabulary.size());
+		System.out.println("Wczytano do słownika: " + vocabulary.getEntries().size());
 
 	}
 	
@@ -130,13 +136,13 @@ public class Algorytm {
 	
 	public void fillWithTagerDateVocabulary(){
 		
-		for (VocEntry voc : vocabulary) {
+		for (VocEntry voc : vocabulary.getEntries()) {
 			// text do tagera -voc
 			voc = (VocEntry) formatXML.addTagerInfo(voc);
 		}
 		
 		System.out.println("Słownik po otagowaniu");
-		for (VocEntry voc : vocabulary) {
+		for (VocEntry voc : vocabulary.getEntries()) {
 			System.out.println(voc.getRepresentation().toString());
 		}
 	}
@@ -167,7 +173,7 @@ public class Algorytm {
 			doc.appendChild(rootElement);
 	 
 			
-			for (VocEntry voc : vocabulary) {
+			for (VocEntry voc : vocabulary.getEntries()) {
 				
 				Element vocEntry = doc.createElement("VocEntry");
 				rootElement.appendChild(vocEntry);
@@ -349,11 +355,14 @@ public class Algorytm {
 	}
 	
 	public void parseVocabulary() {
-		Iterator<VocEntry> vocIterator = vocabulary.iterator();
+		Iterator<VocEntry> vocIterator = vocabulary.getEntries().iterator();
+		List<VocEntry> newEntries = new ArrayList<VocEntry>();
 		while (vocIterator.hasNext()) {
 			VocEntry vocEntry = vocIterator.next();
 			try {
-				parseVocEntry(vocEntry);
+				VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(vocEntry, vocabulary);
+				semanticAnalyzer.walkVocTree();
+				newEntries.addAll(semanticAnalyzer.getNewEtries());
 				drawTree(vocEntry);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -364,6 +373,7 @@ public class Algorytm {
 				vocIterator.remove();
 			}
 		}
+		vocabulary.getEntries().addAll(newEntries);
 
 	}
 	
@@ -386,6 +396,29 @@ public class Algorytm {
 		}
 	}
 	
+	public void saveVocabularyToXml() {
+		try {
+			// create JAXB context and instantiate marshaller
+			
+			
+			JAXBContext context = JAXBContext.newInstance(Vocabulary.class);
+			Marshaller m = context.createMarshaller();
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+			// Write to System.out
+			m.marshal(vocabulary, System.out);
+		} catch (JAXBException e) {
+			System.err.println("Błąd przy zapisie do XML");
+			e.printStackTrace();
+		}
+
+		// StringWriter xml = new StringWriter();
+		//
+		// // Write to File
+		// m.marshal(bookstore, xml);
+
+	}
+	
 	
 	private void drawTree(Entry vocEntry) {
 		try {
@@ -396,22 +429,17 @@ public class Algorytm {
 		
 	}
 
-	private void parseVocEntry(VocEntry vocEntry) {
-		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(vocEntry);
-		semanticAnalyzer.walkVocTree();
-	}
-
 	private void parseRuleEntry(RuleEntry ruleEntry){
 		System.out.println("parsuj rule");
-		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(ruleEntry);
+		VocabularySemanticAnalyzer semanticAnalyzer = new VocabularySemanticAnalyzer(ruleEntry, vocabulary);
 		semanticAnalyzer.walkRuleTree();
 	}
 	
-	public List<VocEntry> getVocabulary() {
+	public Vocabulary getVocabulary() {
 		return vocabulary;
 	}
 
-	public void setVocabulary(List<VocEntry> vocabulary) {
+	public void setVocabulary(Vocabulary vocabulary) {
 		this.vocabulary = vocabulary;
 	}
 	
@@ -423,7 +451,5 @@ public class Algorytm {
 		this.rules = rules;
 	}
 
-	
-	
 	
 }

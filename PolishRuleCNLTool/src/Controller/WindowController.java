@@ -4,11 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import GUI.Window;
 import Model.Line;
@@ -68,8 +72,9 @@ public class WindowController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				algorytm.parseVocabulary();
-				
+				algorytm.saveVocabularyToXml();
 			}
+
 		};
 	}
 
@@ -198,10 +203,10 @@ public class WindowController {
 			algorytm.generateVocabulary(list);
 			
 			// odblokowuje 2. KROK
-			if (!algorytm.getVocabulary().isEmpty()) {
+			if (!algorytm.getVocabulary().getEntries().isEmpty()) {
 				window.getTagVocPanel().setVisible(true);
 				
-				for (VocEntry voc : algorytm.getVocabulary()) {
+				for (VocEntry voc : algorytm.getVocabulary().getEntries()) {
 					System.out.println(voc.toString());
 				}
 				

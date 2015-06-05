@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.abego.treelayout.internal.util.java.lang.string.StringUtil;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -192,5 +191,9 @@ public class VocEntryParseTreeWalker extends ParseTreeWalker {
 
 	public void setVocEntry(VocEntry vocEntry) {
 		this.vocEntry = vocEntry;
+	}
+
+	public List<VocEntry> getIsRoleOfFactTypes() {
+		return isRoleOfFactTypes;
 	}
 }

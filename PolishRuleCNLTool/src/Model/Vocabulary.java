@@ -3,11 +3,14 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 
  * @author wposlednicka
  *
  */
+@XmlRootElement(namespace = "pl.wika")
 public class Vocabulary {
 
 	private List<VocEntry> entries;

@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class FactTypeForm {
 
-    public List<Placeholder> placeholders = new ArrayList<Placeholder>();
-    public List<Placeholder> verbPhrases = new ArrayList<Placeholder>();
+	private List<Placeholder> placeholders = new ArrayList<Placeholder>();
+	private List<Placeholder> verbPhrases = new ArrayList<Placeholder>();
 	
     public List<Placeholder> getPlaceholders() {
 		return placeholders;
